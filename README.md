@@ -1,10 +1,10 @@
 # Day 8 — RAG Pipeline: Trợ Lý Dịch Vụ & Quy Chế Đào Tạo VinUni
 
-> **Nhóm Dalab (K4-L3A)**  
-> **Trưởng nhóm kỹ thuật / Full Pipeline Lead:** NGUYỄN VĂN SƠN (MSSV: 2A202602744)  
+> **Học viên (Solo):** NGUYỄN VĂN SƠN (MSSV: 2A202602744)  
+> **Lớp:** K4-L3A  
 > **Chủ đề:** Hệ thống RAG hỏi đáp Dịch vụ, Quy chế Đào tạo tín chỉ, Chính sách Học bổng và Nội quy Ký túc xá Sinh viên VinUni (VinUni Student Handbook & Academic Services).  
 > **Branch nộp bài:** `nhom-dalab`  
-> **Trạng thái kiểm thử:** ✅ **20/20 tests passed** (`pytest -q` trong 0.33s)
+> **Trạng thái kiểm thử:** ✅ **20/20 tests passed** (`pytest -q` trong 0.21s)
 
 ---
 
@@ -46,7 +46,7 @@ Chatbot RAG hỗ trợ sinh viên tra cứu và giải đáp các chính sách �
 
 ```text
 K4-L3A-RAG-Pipeline/
-├── TEAMMATES.md                     # Danh sách thành viên, phân công vai trò và cam kết
+├── TEAMMATES.md                     # Thông tin học viên (Solo), phân công module và cam kết
 ├── README.md                        # Hướng dẫn chi tiết, kiến trúc và kết quả
 ├── app.py                           # Giao diện Chatbot Streamlit hoàn chỉnh
 ├── .env.example                     # File cấu hình môi trường mẫu
@@ -71,22 +71,16 @@ K4-L3A-RAG-Pipeline/
 │   ├── task9_retrieval_pipeline.py  # Pipeline tích hợp, threshold fallback
 │   └── task10_generation.py         # Generation có trích dẫn [Document X] & Safe Refusal
 │
-├── group_project/                   # Đánh giá nhóm & Golden dataset
+├── group_project/                   # Đánh giá dự án & Golden dataset
 │   ├── evaluation/
 │   │   ├── golden_dataset.json      # 16 cặp câu hỏi - câu trả lời - ngữ cảnh mẫu
 │   │   └── RESULT.md                # Báo cáo A/B benchmark (Dense vs Hybrid RRF)
-│   └── individual/                  # Thư mục nộp báo cáo cá nhân
-│       ├── 2A202602744-Son.md       # Báo cáo cá nhân: Nguyễn Văn Sơn (Full Pipeline Lead)
-│       ├── 2A202602767-Bao.md       # Báo cáo cá nhân: Trần Gia Bảo (Retrieval & Eval Lead)
-│       ├── 2A202602515-Bach.md      # Báo cáo cá nhân: Lê Xuân Bách (Data Lead)
-│       └── 2A202602960-Thuy.md      # Báo cáo cá nhân: Nguyễn Minh Thúy (UI & Gen Lead)
+│   └── individual/                  # Báo cáo cá nhân
+│       └── 2A202602744-Son.md       # Báo cáo cá nhân: Nguyễn Văn Sơn (Solo Full Pipeline)
 │
 ├── reports/                         # Thư mục báo cáo đồng bộ
 │   ├── RESULT.md                    # Báo cáo đánh giá RAG kết quả A/B (100% hoàn thiện)
-│   ├── 2A202602744-Son.md           # Báo cáo cá nhân Nguyễn Văn Sơn
-│   ├── 2A202602767-Bao.md           # Báo cáo cá nhân Trần Gia Bảo
-│   ├── 2A202602515-Bach.md          # Báo cáo cá nhân Lê Xuân Bách
-│   └── 2A202602960-Thuy.md          # Báo cáo cá nhân Nguyễn Minh Thúy
+│   └── 2A202602744-Son.md           # Báo cáo cá nhân: Nguyễn Văn Sơn
 │
 └── tests/                           # Kiểm thử tự động (20/20 passed)
     ├── test_contracts.py            # 15 tests kiểm tra schema và contract interface
@@ -127,7 +121,7 @@ TOP_K=5
 ```bash
 pytest -q
 ```
-*Kết quả:* `20 passed in 0.33s` (15 contract tests + 5 acceptance tests).
+*Kết quả:* `20 passed in 0.21s` (15 contract tests + 5 acceptance tests).
 
 ### Bước 3: Chạy giao diện Chatbot Streamlit
 
