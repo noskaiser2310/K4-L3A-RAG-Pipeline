@@ -3,10 +3,9 @@ Task 9 — Retrieval pipeline hoàn chỉnh.
 
 Luồng xử lý:
     1. Chạy semantic_search và lexical_search.
-    2. Fuse hai danh sách bằng RRF đúng một lần.
-    3. Lấy best cosine score gốc từ dense results.
-    4. Nếu score dưới threshold, thử PageIndex fallback.
-    5. Nếu fallback lỗi, trả hybrid results thay vì crash.
+    2. Lấy best cosine score gốc từ dense results.
+    3. Nếu score dưới threshold, thử PageIndex fallback.
+    4. Nếu dense score đạt hoặc fallback không có kết quả/lỗi, fuse bằng RRF đúng một lần.
 
 Không so sánh threshold với RRF score vì hai thang đo khác nhau.
 """
@@ -28,27 +27,27 @@ def retrieve(
     use_reranking: bool = True,
 ) -> list[dict]:
     """Trả về hybrid hoặc pageindex SearchResult."""
-    # TODO: Implement full retrieval pipeline.
-    #
-    # dense = semantic_search(query, top_k=top_k * 2)
-    # sparse = lexical_search(query, top_k=top_k * 2)
-    # hybrid = (
-    #     rerank_rrf([dense, sparse], top_k=top_k)
-    #     if use_reranking else dense[:top_k]
-    # )
-    #
-    # best_dense_score = dense[0]["score"] if dense else 0.0
-    # if best_dense_score < score_threshold:
-    #     try:
-    #         fallback = pageindex_search(query, top_k=top_k)
-    #         if fallback:
-    #             return fallback
-    #     except Exception:
-    #         pass
-    # return hybrid[:top_k]
-    raise NotImplementedError("Implement retrieve")
+    dense = semantic_search(query, top_k=top_k * 2 if top_k > 0 else 10)
+    sparse = lexical_search(query, top_k=top_k * 2 if top_k > 0 else 10)
+
+    best_dense_score = dense[0]["score"] if dense else 0.0
+
+    # Nếu độ tương đồng ngữ nghĩa dense dưới ngưỡng, thử dùng fallback
+    if best_dense_score < score_threshold:
+        try:
+            fallback = pageindex_search(query, top_k=top_k)
+            if fallback:
+                return fallback[:top_k]
+        except Exception:
+            pass
+
+    # Nếu không fallback hoặc fallback thất bại, thực hiện RRF (hoặc dense-only nếu tắt reranking)
+    if use_reranking:
+        hybrid = rerank_rrf([dense, sparse], top_k=top_k)
+        return hybrid[:top_k]
+    return dense[:top_k]
 
 
 if __name__ == "__main__":
-    for result in retrieve("test query", top_k=3):
+    for result in retrieve("quy chế học vụ", top_k=3):
         print(result)

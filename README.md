@@ -1,84 +1,157 @@
-# Day 8 — RAG Pipeline
+# Day 8 — RAG Pipeline: Trợ Lý Dịch Vụ & Quy Chế Đào Tạo VinUni
 
-## Mục tiêu
+> **Nhóm Dalab (K4-L3A)**  
+> **Trưởng nhóm kỹ thuật / Full Pipeline Lead:** NGUYỄN VĂN SƠN (MSSV: 2A202602744)  
+> **Chủ đề:** Hệ thống RAG hỏi đáp Dịch vụ, Quy chế Đào tạo tín chỉ, Chính sách Học bổng và Nội quy Ký túc xá Sinh viên VinUni (VinUni Student Handbook & Academic Services).  
+> **Branch nộp bài:** `nhom-dalab`  
+> **Trạng thái kiểm thử:** ✅ **20/20 tests passed** (`pytest -q` trong 0.33s)
 
-Mỗi nhóm xây dựng một chatbot RAG trả lời câu hỏi từ bộ tài liệu do nhóm thu thập. Sản phẩm phải có hybrid retrieval, citation, giao diện chat và báo cáo đánh giá.
+---
 
-Nhóm tự chọn bài toán và thu thập dữ liệu phù hợp; repo không cung cấp dữ liệu mẫu.
+## 1. Tổng quan Dự án & Kiến trúc Pipeline
 
-## Sản phẩm phải nộp
+Chatbot RAG hỗ trợ sinh viên tra cứu và giải đáp các chính sách đào tạo, điều kiện duy trì học bổng, nội quy ký túc xá và thủ tục học vụ với độ tin cậy cao, trích dẫn minh bạch và phòng chống ảo giác:
 
-- Repository nhóm chạy được.
-- Tối thiểu 3 tài liệu chính sách và 5 bài viết/page do nhóm tự thu thập.
-- Pipeline: convert → chunk → index → dense + BM25 → RRF → fallback → generation có citation.
-- Chatbot Streamlit hiển thị câu trả lời và nguồn đã dùng.
-- Golden dataset tối thiểu 15 câu; đánh giá 4 metric và so sánh A/B.
-- `group_project/evaluation/RESULT.md`.
-- Mỗi thành viên nộp báo cáo cá nhân theo template trong `group_project/ịndividual/INDIVIDUAL_REPORT.md`.
+```
+[User Query]
+     │
+     ├──► Dense Semantic Search (Google Gemini Embedding 3072-dim) ──┐
+     │                                                               ├──► Reciprocal Rank Fusion (RRF k=60)
+     └──► Lexical Search (BM25Okapi với Positive IDF Floor) ─────────┘               │
+                                                                                    ▼
+                                                                        Cosine Threshold Check (0.30)
+                                                                             │             │
+                                                        [Above Threshold] ───┘             └───► [Below Threshold]
+                                                                  │                                    │
+                                                      Lost-in-the-Middle Reorder               PageIndex Fallback
+                                                                  │                                    │
+                                                                  └──────────────┬─────────────────────┘
+                                                                                 ▼
+                                                                     LLM Generation (Gemini 3.1 Flash-Lite)
+                                                                     Prompt grounded với [Document X] Citation
+                                                                                 │
+                                                                                 ▼
+                                                                     Streamlit Web UI + Citation Highlighting
+```
 
-## Quick start
+- **Embedding Model:** Google Gemini Embedding (`gemini-embedding-001`, 3072 chiều)
+- **Generator Model:** Google Gemini 3.1 Flash-Lite (`gemini-3.1-flash-lite`)
+- **Retrieval Engine:** Hybrid Search kết hợp ChromaDB VectorStore & BM25Okapi với RRF ($k=60$)
+- **Fallback Strategy:** Fallback sang PageIndex khi Cosine score < 0.30; Safe Refusal khi thiếu bằng chứng
+- **Bonus Capabilities:** Lost-in-the-middle reordering, Multi-turn Conversation Memory, Visual Citation Badges
+
+---
+
+## 2. Cấu trúc Thư mục & Báo cáo Nộp bài
+
+```text
+K4-L3A-RAG-Pipeline/
+├── TEAMMATES.md                     # Danh sách thành viên, phân công vai trò và cam kết
+├── README.md                        # Hướng dẫn chi tiết, kiến trúc và kết quả
+├── app.py                           # Giao diện Chatbot Streamlit hoàn chỉnh
+├── .env.example                     # File cấu hình môi trường mẫu
+│
+├── data/
+│   ├── landing/                     # Dữ liệu thu thập ban đầu
+│   │   ├── legal/                   # 3 PDF quy chế (>2.7KB/file)
+│   │   └── news/                    # 5 JSON tin tức (đầy đủ url, title, date_crawled, content)
+│   └── standardized/                # Dữ liệu đã chuẩn hóa Markdown (>1000 ký tự/file)
+│       ├── legal/                   # 3 Markdown quy chế
+│       └── news/                    # 5 Markdown tin tức
+│
+├── src/                             # Mã nguồn 10 nhiệm vụ pipeline tuân thủ contracts
+│   ├── task1_collect_legal_docs.py  # Thu thập 3 tài liệu quy chế PDF
+│   ├── task2_crawl_news.py          # Thu thập 5 bài viết JSON
+│   ├── task3_convert_markdown.py    # Chuẩn hóa văn bản sang Markdown
+│   ├── task4_chunking_indexing.py   # Chunking (500/50) và Indexing vectorstore (Gemini)
+│   ├── task5_semantic_search.py     # Truy vấn vector Cosine Similarity
+│   ├── task6_lexical_search.py      # Truy vấn BM25Okapi với positive IDF floor
+│   ├── task7_reranking.py           # Dung hợp thứ hạng RRF (k=60)
+│   ├── task8_pageindex_vectorless.py# PageIndex vectorless search fallback
+│   ├── task9_retrieval_pipeline.py  # Pipeline tích hợp, threshold fallback
+│   └── task10_generation.py         # Generation có trích dẫn [Document X] & Safe Refusal
+│
+├── group_project/                   # Đánh giá nhóm & Golden dataset
+│   ├── evaluation/
+│   │   ├── golden_dataset.json      # 16 cặp câu hỏi - câu trả lời - ngữ cảnh mẫu
+│   │   └── RESULT.md                # Báo cáo A/B benchmark (Dense vs Hybrid RRF)
+│   └── individual/                  # Thư mục nộp báo cáo cá nhân
+│       ├── 2A202602744-Son.md       # Báo cáo cá nhân: Nguyễn Văn Sơn (Full Pipeline Lead)
+│       ├── 2A202602767-Bao.md       # Báo cáo cá nhân: Trần Gia Bảo (Retrieval & Eval Lead)
+│       ├── 2A202602515-Bach.md      # Báo cáo cá nhân: Lê Xuân Bách (Data Lead)
+│       └── 2A202602960-Thuy.md      # Báo cáo cá nhân: Nguyễn Minh Thúy (UI & Gen Lead)
+│
+├── reports/                         # Thư mục báo cáo đồng bộ
+│   ├── RESULT.md                    # Báo cáo đánh giá RAG kết quả A/B (100% hoàn thiện)
+│   ├── 2A202602744-Son.md           # Báo cáo cá nhân Nguyễn Văn Sơn
+│   ├── 2A202602767-Bao.md           # Báo cáo cá nhân Trần Gia Bảo
+│   ├── 2A202602515-Bach.md          # Báo cáo cá nhân Lê Xuân Bách
+│   └── 2A202602960-Thuy.md          # Báo cáo cá nhân Nguyễn Minh Thúy
+│
+└── tests/                           # Kiểm thử tự động (20/20 passed)
+    ├── test_contracts.py            # 15 tests kiểm tra schema và contract interface
+    └── test_acceptance.py           # 5 tests kiểm tra dữ liệu, golden set, report
+```
+
+---
+
+## 3. Quick Start & Hướng dẫn Chạy lại
+
+### Bước 1: Thiết lập môi trường & cấu hình API Key
 
 ```bash
+# Tạo và kích hoạt virtual environment
 python -m venv .venv
-source .venv/bin/activate       # Windows: .venv\Scripts\activate
-python -m pip install --upgrade pip setuptools wheel
-python -m pip install -e ".[dev]"
-python -m playwright install chromium
+source .venv/bin/activate        # Trên Windows: .venv\Scripts\activate
+
+# Cài đặt dependencies (yêu cầu Python >= 3.10)
+pip install -e ".[dev]"
+
+# Tạo file .env từ mẫu và điền GEMINI_API_KEY
 cp .env.example .env
 ```
 
-Điền API key cần dùng trong `.env`; không commit file này.
+Nội dung cơ bản trong `.env`:
+```env
+LLM_PROVIDER=gemini
+LLM_MODEL=gemini-3.1-flash-lite
+EMBEDDING_PROVIDER=gemini
+EMBEDDING_MODEL=gemini-embedding-001
+GEMINI_API_KEY=your_gemini_api_key_here
+SCORE_THRESHOLD=0.3
+TOP_K=5
+```
+
+### Bước 2: Chạy kiểm thử tự động (20/20 tests)
 
 ```bash
-# 1. Thu thập và chuẩn hoá
-python -m src.task1_collect_legal_docs
-python -m src.task2_crawl_news
-python -m src.task3_convert_markdown
-
-# 2. Index và kiểm tra contract
-python -m src.task4_chunking_indexing
 pytest -q
+```
+*Kết quả:* `20 passed in 0.33s` (15 contract tests + 5 acceptance tests).
 
-# 3. Chạy sản phẩm
+### Bước 3: Chạy giao diện Chatbot Streamlit
+
+```bash
 streamlit run app.py
 ```
+Ứng dụng sẽ mở tại `http://localhost:8501`, cho phép:
+- Tra cứu trực quan các câu hỏi quy chế đào tạo, học bổng, KTX.
+- Bật/tắt chế độ Hybrid Search + RRF so với Dense-only.
+- Xem chi tiết từng nguồn tài liệu trích dẫn, điểm Score và URL kiểm chứng.
+- Kiểm tra cơ chế Safe Refusal trên câu hỏi ngoài phạm vi.
 
-## Lộ trình 3 giờ
+---
 
-| Mốc                  | Thời gian | Kết quả cần có                           |
-| -------------------- | --------: | ---------------------------------------- |
-| 0. Setup             |   10 phút | Môi trường và `.env` sẵn sàng            |
-| 1. Data              |   25 phút | ≥3 legal, ≥5 news, Markdown đã chuẩn hoá |
-| 2. Index & search    |   30 phút | ChromaDB, dense search và BM25 chạy được |
-| 3. Fusion & fallback |   25 phút | RRF và fallback tuân thủ contract        |
-| 4. Generation & UI   |   30 phút | Chatbot trả lời có citation              |
-| 5. Evaluation        |   30 phút | 15+ Q&A, 4 metric, A/B comparison        |
-| 6. Demo & handoff    |   30 phút | Test, report, demo và push repository    |
+## 4. Tóm tắt Kết quả Đánh giá A/B (Benchmark 4 Metrics)
 
-## Lưu ý quy tắc để có code quality tốt:
+So sánh giữa **Config A (Dense-only)** và **Config B (Hybrid + RRF)** trên tập 16 Golden Q&A:
 
-- Dense và BM25 nên cùng trả về `SearchResult` theo một schema.
-- RRF chỉ nên dùng để gộp thứ hạng và chỉ chạy một lần.
-- Fallback dùng cosine score gốc của dense retrieval.
-- Threshold phải được hiệu chỉnh trên query in domain và out of domain, không có một con số đúng cho mọi corpus.
+| Chỉ số (Metric) | Config A (Dense-only) | Config B (Hybrid + RRF) | Chênh lệch (Delta B−A) |
+| :--- | :---: | :---: | :---: |
+| **Faithfulness** (Độ trung thực) | 0.88 | **0.96** | **+0.08** |
+| **Answer Relevance** (Độ liên quan) | 0.84 | **0.93** | **+0.09** |
+| **Context Recall** (Độ bao phủ) | 0.81 | **0.94** | **+0.13** |
+| **Context Precision** (Độ chính xác) | 0.79 | **0.91** | **+0.12** |
+| **Điểm Trung Bình (Average)** | **0.830** | **0.935** | **+0.105 (+10.5%)** |
 
-## Tài liệu
-
-- [Module contracts](docs/MODULE_CONTRACTS.md): schema, interface và invariant mà code/test nên tuân theo.
-- [Step-by-step guide](docs/STEP_BY_STEP.md): thứ tự triển khai và tiêu chí hoàn thành từng bước.
-- [Grading rubric](docs/GRADING_RUBRIC.md): Rubric thang điểm.
-- [Individual report](group_project/ịndividual/INDIVIDUAL_REPORT.md): template báo cáo cá nhân.
-- [Suggested topics](docs/SUGGESTED_TOPICS.md): danh sách chủ đề tham khảo, không bắt buộc.
-
-## Kiểm tra
-
-```bash
-# Contract tests
-pytest tests/test_contracts.py -q
-
-# Acceptance tests
-pytest tests/test_acceptance.py -q
-
-# Toàn bộ
-pytest -q
-```
+Chi tiết xem tại [`group_project/evaluation/RESULT.md`](group_project/evaluation/RESULT.md) hoặc [`reports/RESULT.md`](reports/RESULT.md).

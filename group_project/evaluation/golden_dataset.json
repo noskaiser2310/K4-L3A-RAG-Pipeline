@@ -1,0 +1,82 @@
+[
+  {
+    "question": "Sinh viên cần đăng ký tối thiểu và tối đa bao nhiêu tín chỉ trong một học kỳ chính?",
+    "expected_answer": "Sinh viên phải đăng ký tối thiểu 12 tín chỉ và tối đa 20 tín chỉ trong một học kỳ chính. Sinh viên có GPA kỳ trước từ 3.6 trở lên được phép đăng ký tối đa 24 tín chỉ.",
+    "expected_context": "Sinh vien phai dang ky toi thieu 12 tin chi va toi da 20 tin chi trong mot hoc ky chinh. Sinh vien co GPA hoc ky truoc dat tu 3.6 tro len duoc phep dang ky toi da 24 tin chi."
+  },
+  {
+    "question": "Quy định về thời gian rút học phần và ghi điểm W diễn ra như thế nào?",
+    "expected_answer": "Trong 2 tuần đầu tiên của học kỳ, sinh viên rút học phần không bị ghi điểm W. Từ sau tuần thứ 2 đến hết tuần thứ 6, sinh viên rút học phần sẽ bị ghi điểm W (Withdraw). Sau tuần thứ 6 không được phép rút học phần.",
+    "expected_context": "Viec rut hoc phan duoc phep thuc hien trong vong 2 tuan dau tien cua hoc ky ma khong bi ghi diem W tren bang diem. Sau tuan thu 2 den het tuan thu 6, sinh vien rut hoc phan se bi ghi diem W (Withdraw). Sau tuan thu 6 khong duoc phep rut hoc phan."
+  },
+  {
+    "question": "Điểm trung bình chung tích lũy (CGPA) tối thiểu để được xét tốt nghiệp đại học là bao nhiêu?",
+    "expected_answer": "Điểm trung bình chung tích lũy (CGPA) tối thiểu toàn khóa để được công nhận tốt nghiệp là 2.0 trên thang 4.0.",
+    "expected_context": "Diem trung binh chung tich luy (CGPA) toi thieu de tot nghiep la 2.0 tren thang 4.0."
+  },
+  {
+    "question": "Khi nào sinh viên bị cảnh báo học vụ mức 1?",
+    "expected_answer": "Sinh viên bị cảnh báo học vụ mức 1 nếu GPA học kỳ đạt dưới 1.50 đối với sinh viên năm nhất hoặc dưới 1.80 đối với sinh viên năm hai trở đi.",
+    "expected_context": "Sinh vien bi canh bao hoc vu muc 1 neu GPA hoc ky dat duoi 1.50 doi voi nam nhat hoac duoi 1.80 doi voi nam hai tro di."
+  },
+  {
+    "question": "Chuẩn đầu ra tiếng Anh để được công nhận tốt nghiệp VinUni là gì?",
+    "expected_answer": "Sinh viên phải hoàn thành chứng chỉ Chuẩn ngoại ngữ tiếng Anh tương đương IELTS 6.5 trở lên.",
+    "expected_context": "hoan thanh chung chi Chuan ngoai ngu tieng Anh tuong duong IELTS 6.5 tro len va khong bi ky luat tu muc dinh chi hoc tap tro len."
+  },
+  {
+    "question": "Quy định điều kiện điểm số để duy trì học bổng tài năng hàng năm là gì?",
+    "expected_answer": "Sinh viên nhận học bổng tài năng phải duy trì điểm CGPA tích lũy tối thiểu 3.20/4.00 tại mỗi kỳ đánh giá cuối năm học, đạt điểm rèn luyện từ loại Tốt trở lên (>= 80 điểm) và tham gia tối thiểu 20 giờ phục vụ cộng đồng mỗi năm.",
+    "expected_context": "Sinh vien nhan hoc bong tai nang phai duy tri diem CGPA tich luy toi thieu 3.20/4.00 tai moi ky danh gia cuoi nam hoc. Sinh vien phai dat diem ren luyen tu loai Tot tro len (>= 80 diem) va tham gia toi thieu 20 gio hoat dong phuc vu cong dong moi nam."
+  },
+  {
+    "question": "Chính sách học bổng toàn phần Vingroup bao gồm những quyền lợi gì?",
+    "expected_answer": "Học bổng toàn phần bao gồm 100% học phí và sinh hoạt phí 35 triệu đồng/năm dành cho top 5% thí sinh đạt thành tích vượt trội.",
+    "expected_context": "Hoc bong Toan phan (100% hoc phi va sinh hoat phi 35 trieu/nam): danh cho top 5% thi sinh dat thanh tich vuot troi."
+  },
+  {
+    "question": "Hồ sơ cần nộp để xin gói hỗ trợ tài chính căn cứ theo nhu cầu gồm những gì?",
+    "expected_answer": "Hồ sơ cần nộp gồm giấy xác nhận thu nhập gia đình, hóa đơn tiền điện nước 6 tháng gần nhất và bài thuyết minh hoàn cảnh.",
+    "expected_context": "Ho so can nop gom: giay xac nhan thu nhap gia dinh, hoa don tien dien nuoc 6 thang gan nhat va bai thuyet minh hoan canh."
+  },
+  {
+    "question": "Giờ mở cửa và giới nghiêm ra vào ký túc xá VinUni quy định như thế nào?",
+    "expected_answer": "KTX mở cửa từ 06:00 sáng đến 23:00 đêm hàng ngày. Sinh viên về sau 23:00 phải xuất trình thẻ sinh viên và ghi rõ lý do. Khách ngoài tuyệt đối không được phép lưu trú qua đêm.",
+    "expected_context": "KTX mo cua tu 06:00 sang den 23:00 dem hang ngay. Sinh vien ve sau 23:00 phai xuat trinh the sinh vien va ghi ro ly do tai phong truc ban. Khach ngoai khong duoc phep luu tru qua dem tai phong o cua sinh vien."
+  },
+  {
+    "question": "Tiền đặt cọc phòng KTX là bao nhiêu và được hoàn trả khi nào?",
+    "expected_answer": "Tiền đặt cọc phòng là 2.000.000 VNĐ và được hoàn trả vào tài khoản của sinh viên sau 15 ngày làm việc kể từ khi kết thúc hợp đồng nếu không có hư hỏng tài sản.",
+    "expected_context": "Tien dat coc phong (2.000.000 VND) se duoc hoan tra vao tai khoan cua sinh vien sau 15 ngay lam viec neu khong co vi pham tai san."
+  },
+  {
+    "question": "Thời gian mở cổng đăng ký ký túc xá học kỳ Thu diễn ra vào khoảng thời gian nào?",
+    "expected_answer": "Thời gian mở cổng đăng ký bắt đầu từ 08:00 ngày 01/08 đến 17:00 ngày 15/08 hàng năm trực tuyến qua Cổng thông tin Sinh viên (Student Portal).",
+    "expected_context": "Thoi gian bat dau: Tu 08:00 ngay 01/08 den 17:00 ngay 15/08 hang nam. Hinh thuc nop don: Truc tuyen thong qua Cong thong tin Sinh vien (Student Portal)."
+  },
+  {
+    "question": "Mức phí phòng ký túc xá tiêu chuẩn 2 người là bao nhiêu một tháng?",
+    "expected_answer": "Phí phòng tiêu chuẩn 2 người là 3.500.000 VNĐ/sinh viên/tháng (đã bao gồm wifi, nước sinh hoạt và dọn phòng chung hàng tuần).",
+    "expected_context": "Phong tieu chuan 2 nguoi: 3.500.000 VND/sinh vien/thang (da bao gom wifi, nuoc sinh hoat va don phong chung hang tuan)."
+  },
+  {
+    "question": "Bài luận cá nhân (Personal Statement) khi nộp hồ sơ xét học bổng có giới hạn độ dài bao nhiêu từ?",
+    "expected_answer": "Bài luận cá nhân không quá 1000 từ, nêu rõ định hướng nghề nghiệp và lý do xứng đáng nhận học bổng.",
+    "expected_context": "Bai luan ca nhan (Personal Statement) khong qua 1000 tu neu ro dinh huong nghe nghiep va ly do xung dang nhan hoc bong."
+  },
+  {
+    "question": "Sinh viên bị ốm phải nộp đơn xin hoãn thi trong vòng bao lâu và nộp kèm minh chứng gì?",
+    "expected_answer": "Sinh viên phải nộp đơn xin hoãn thi trong vòng 48 giờ kể từ giờ bắt đầu ca thi, kèm theo giấy xác nhận điều trị hoặc giấy ra viện của bệnh viện tuyến quận/huyện trở lên.",
+    "expected_context": "Sinh vien bi om nang, tai nan bat kha khang phai nop Don xin hoan thi trong vong 48 gio ke tu gio bat dau ca thi. Kem theo giay xac nhan dieu tri hoac giay ra vien cua benh vien tuyen quan/huyen tro len."
+  },
+  {
+    "question": "Lệ phí phúc khảo điểm thi cuối kỳ là bao nhiêu và khi nào được hoàn lại?",
+    "expected_answer": "Lệ phí phúc khảo là 100.000 VNĐ cho mỗi học phần. Nếu sau khi chấm lại mà điểm số được tăng lên, nhà trường sẽ hoàn trả 100% lệ phí này.",
+    "expected_context": "Le phi phuc khao: 100.000 VND cho moi hoc phan. Neu sau khi cham lai ma diem so duoc tang len, nha truong se hoan tra 100% le phi nay."
+  },
+  {
+    "question": "Sinh viên cần bao nhiêu điểm rèn luyện để đạt mức Tốt và phải tích lũy mấy giờ phục vụ cộng đồng?",
+    "expected_answer": "Mức Tốt yêu cầu từ 80 đến 89 điểm rèn luyện (điều kiện để duy trì học bổng), và mỗi sinh viên cần tích lũy tối thiểu 20 giờ hoạt động phục vụ cộng đồng trong mỗi năm học.",
+    "expected_context": "Tot: Tu 80 den 89 diem (dieu kien bat buoc de duy tri hoc bong). Moi sinh vien can tich luy toi thieu 20 gio hoat dong tinh nguyen/cong dong trong moi nam hoc."
+  }
+]
